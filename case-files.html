@@ -1,0 +1,1093 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Case Files — Startup Due Diligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;0,9..144,700;1,9..144,500&family=IBM+Plex+Sans:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --folder-tan: #C9A468;
+      --folder-tan-deep: #A6793A;
+      --dossier-cream: #F3ECDA;
+      --ink-navy: #1E2A38;
+      --stamp-red: #B23A2E;
+      --signal-teal: #2F7E6D;
+      --pencil: #6B6256;
+      --hairline: rgba(30, 42, 56, 0.18);
+      --shadow: rgba(30, 20, 8, 0.25);
+      --radius: 3px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      -webkit-text-size-adjust: 100%;
+    }
+
+    body {
+      margin: 0;
+      background: var(--folder-tan);
+      background-image:
+        repeating-linear-gradient(0deg, rgba(0, 0, 0, 0.025) 0px, rgba(0, 0, 0, 0.025) 1px, transparent 1px, transparent 3px);
+      color: var(--ink-navy);
+      font-family: 'IBM Plex Sans', sans-serif;
+      min-height: 100vh;
+    }
+
+    .sr-only {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+    }
+
+    .page {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+    }
+
+    /* ---------- Masthead ---------- */
+    .masthead {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 22px;
+      border-bottom: 1px solid var(--hairline);
+      margin-bottom: 36px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      font-size: 14px;
+    }
+
+    .brand svg {
+      flex-shrink: 0;
+    }
+
+    .tagline {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      color: var(--ink-navy);
+      opacity: 0.65;
+      letter-spacing: 0.02em;
+    }
+
+    /* ---------- Intake / hero ---------- */
+    .intake {
+      position: relative;
+      margin-bottom: 8px;
+    }
+
+    .file-stack {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+
+    .file-stack span {
+      position: absolute;
+      inset: 14px 10px -10px 22px;
+      border-radius: var(--radius);
+      box-shadow: 0 10px 24px var(--shadow);
+    }
+
+    .file-stack span:nth-child(1) {
+      background: #DCC58E;
+      transform: rotate(-3deg) translateY(10px);
+    }
+
+    .file-stack span:nth-child(2) {
+      background: #E6D3A0;
+      transform: rotate(2deg) translateY(18px);
+    }
+
+    .file-card {
+      position: relative;
+      z-index: 1;
+      background: var(--dossier-cream);
+      border-radius: var(--radius);
+      box-shadow: 0 18px 34px var(--shadow);
+      padding: 34px 30px 28px;
+    }
+
+    .eyebrow {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12px;
+      letter-spacing: 0.14em;
+      color: var(--stamp-red);
+      margin: 0 0 14px;
+      font-weight: 600;
+    }
+
+    .file-card h1 {
+      font-family: 'Fraunces', serif;
+      font-weight: 600;
+      font-size: clamp(28px, 5vw, 38px);
+      line-height: 1.12;
+      margin: 0 0 14px;
+      max-width: 18ch;
+    }
+
+    .lede {
+      font-size: 15px;
+      line-height: 1.55;
+      color: var(--ink-navy);
+      opacity: 0.82;
+      max-width: 46ch;
+      margin: 0 0 22px;
+    }
+
+    textarea {
+      width: 100%;
+      resize: vertical;
+      min-height: 96px;
+      background: #FBF7EC;
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius);
+      padding: 14px 16px;
+      font-family: 'IBM Plex Sans', sans-serif;
+      font-size: 15px;
+      line-height: 1.5;
+      color: var(--ink-navy);
+    }
+
+    textarea::placeholder {
+      color: rgba(30, 42, 56, 0.45);
+    }
+
+    textarea:focus-visible {
+      outline: 2px solid var(--ink-navy);
+      outline-offset: 2px;
+    }
+
+    .intake-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 16px;
+      flex-wrap: wrap;
+    }
+
+    .meta {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11.5px;
+      color: var(--ink-navy);
+      opacity: 0.55;
+      letter-spacing: 0.02em;
+    }
+
+    .btn-open {
+      background: var(--ink-navy);
+      color: var(--dossier-cream);
+      border: none;
+      border-radius: var(--radius);
+      padding: 12px 22px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 13.5px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      cursor: pointer;
+      transition: transform 0.15s ease, background 0.15s ease;
+    }
+
+    .btn-open:hover {
+      background: #2A3B4F;
+    }
+
+    .btn-open:active {
+      transform: translateY(1px);
+    }
+
+    .btn-open:focus-visible {
+      outline: 2px solid var(--stamp-red);
+      outline-offset: 2px;
+    }
+
+    .btn-open:disabled {
+      opacity: 0.55;
+      cursor: default;
+    }
+
+    .error {
+      margin: 14px 0 0;
+      font-size: 13.5px;
+      color: var(--stamp-red);
+      font-weight: 500;
+    }
+
+    /* ---------- Loading ---------- */
+    .loading {
+      background: var(--dossier-cream);
+      border-radius: var(--radius);
+      box-shadow: 0 18px 34px var(--shadow);
+      padding: 30px 30px 26px;
+      text-align: center;
+    }
+
+    .loading-line {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 14px;
+      color: var(--ink-navy);
+      margin: 0 0 16px;
+    }
+
+    .teleprinter {
+      height: 2px;
+      background: var(--hairline);
+      border-radius: 2px;
+      overflow: hidden;
+      position: relative;
+    }
+
+    .teleprinter span {
+      position: absolute;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      width: 36%;
+      background: var(--stamp-red);
+      border-radius: 2px;
+      animation: teleprinter-move 1.1s ease-in-out infinite;
+    }
+
+    @keyframes teleprinter-move {
+      0% {
+        left: -36%;
+      }
+
+      100% {
+        left: 100%;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .teleprinter span {
+        animation: none;
+        left: 0;
+        width: 100%;
+        opacity: 0.5;
+      }
+    }
+
+    /* ---------- Dossier / results ---------- */
+    .dossier {
+      background: var(--dossier-cream);
+      border-radius: var(--radius);
+      box-shadow: 0 18px 34px var(--shadow);
+      padding: 30px 30px 24px;
+    }
+
+    .verdict-row {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      padding-bottom: 22px;
+      border-bottom: 1px solid var(--hairline);
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .stamp {
+      --stamp-color: var(--signal-teal);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border: 3px solid var(--stamp-color);
+      color: var(--stamp-color);
+      border-radius: 4px;
+      padding: 8px 16px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-weight: 700;
+      font-size: 14px;
+      letter-spacing: 0.06em;
+      transform: rotate(-6deg);
+      filter: url(#inkEdge);
+      white-space: nowrap;
+    }
+
+    .stamp.stamp-caution {
+      --stamp-color: var(--folder-tan-deep);
+    }
+
+    .stamp.stamp-risk {
+      --stamp-color: var(--stamp-red);
+    }
+
+    .stamp.stamp-in {
+      animation: stampDown 0.4s cubic-bezier(.2, 1.4, .4, 1) both;
+    }
+
+    @keyframes stampDown {
+      0% {
+        transform: rotate(-6deg) scale(1.8);
+        opacity: 0;
+      }
+
+      70% {
+        transform: rotate(-6deg) scale(0.94);
+        opacity: 1;
+      }
+
+      100% {
+        transform: rotate(-6deg) scale(1);
+        opacity: 1;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .stamp.stamp-in {
+        animation: none;
+      }
+    }
+
+    .verdict-reason {
+      font-size: 14.5px;
+      line-height: 1.45;
+      color: var(--ink-navy);
+      opacity: 0.85;
+      margin: 0;
+      max-width: 42ch;
+    }
+
+    .tabs {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 22px;
+      overflow-x: auto;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+
+    .tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .tab {
+      flex-shrink: 0;
+      background: #E2D6B5;
+      border: 1px solid var(--hairline);
+      border-bottom: none;
+      border-radius: 5px 5px 0 0;
+      padding: 9px 16px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12.5px;
+      letter-spacing: 0.05em;
+      color: var(--ink-navy);
+      opacity: 0.6;
+      cursor: pointer;
+      transition: opacity 0.15s ease, background 0.15s ease;
+    }
+
+    .tab:hover {
+      opacity: 0.85;
+    }
+
+    .tab.active {
+      background: #FBF7EC;
+      opacity: 1;
+      font-weight: 600;
+    }
+
+    .tab:focus-visible {
+      outline: 2px solid var(--ink-navy);
+      outline-offset: 2px;
+    }
+
+    .panel {
+      background: #FBF7EC;
+      border: 1px solid var(--hairline);
+      border-radius: 0 4px 4px 4px;
+      padding: 22px 20px;
+      margin-top: -22px;
+      margin-bottom: 22px;
+    }
+
+    /* Market panel */
+    .signal-badges {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 18px;
+      flex-wrap: wrap;
+    }
+
+    .field-block {
+      margin-bottom: 18px;
+    }
+
+    .field-block:last-child {
+      margin-bottom: 0;
+    }
+
+    .field-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10.5px;
+      letter-spacing: 0.08em;
+      color: var(--pencil);
+      margin: 0 0 6px;
+      text-transform: uppercase;
+    }
+
+    .field-text {
+      font-size: 15px;
+      line-height: 1.6;
+      margin: 0;
+    }
+
+    .field-text-sm {
+      font-size: 13px;
+      line-height: 1.5;
+      margin: 0;
+      color: var(--ink-navy);
+      opacity: 0.85;
+    }
+
+    .trend-list {
+      margin: 0;
+      padding-left: 18px;
+      font-size: 14.5px;
+      line-height: 1.6;
+    }
+
+    .trend-list li {
+      margin-bottom: 4px;
+    }
+
+    .trend-list li:last-child {
+      margin-bottom: 0;
+    }
+
+    /* Competitor cards */
+    .competitor-card-full {
+      padding: 16px 0;
+      border-bottom: 1px solid var(--hairline);
+    }
+
+    .competitor-card-full:last-child {
+      border-bottom: none;
+      padding-bottom: 4px;
+    }
+
+    .competitor-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 6px;
+    }
+
+    .competitor-name {
+      font-weight: 600;
+      font-size: 15.5px;
+      margin: 0;
+    }
+
+    .competitor-desc {
+      font-size: 13.5px;
+      line-height: 1.55;
+      color: var(--ink-navy);
+      opacity: 0.85;
+      margin: 0 0 12px;
+    }
+
+    .competitor-meta {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      background: var(--dossier-cream);
+      border-radius: var(--radius);
+      padding: 10px 12px;
+    }
+
+    .badge {
+      flex-shrink: 0;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 10.5px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+      padding: 4px 9px;
+      border-radius: 3px;
+      white-space: nowrap;
+    }
+
+    .badge-low {
+      background: rgba(47, 126, 109, 0.15);
+      color: var(--signal-teal);
+    }
+
+    .badge-medium {
+      background: rgba(166, 121, 58, 0.18);
+      color: var(--folder-tan-deep);
+    }
+
+    .badge-high {
+      background: rgba(178, 58, 46, 0.15);
+      color: var(--stamp-red);
+    }
+
+    /* Scaling staged list */
+    .horizon-group {
+      margin-bottom: 20px;
+    }
+
+    .horizon-group:last-child {
+      margin-bottom: 0;
+    }
+
+    .horizon-label {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      letter-spacing: 0.08em;
+      color: var(--pencil);
+      text-transform: uppercase;
+      margin: 0 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .horizon-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--hairline);
+    }
+
+    .idea-block {
+      padding: 4px 0 10px 16px;
+      border-left: 2px solid var(--hairline);
+      margin-bottom: 6px;
+    }
+
+    .idea-block:last-child {
+      margin-bottom: 0;
+    }
+
+    .idea-row {
+      font-size: 14.5px;
+      font-weight: 600;
+      line-height: 1.5;
+      margin: 0 0 4px;
+    }
+
+    .idea-rationale {
+      font-size: 13px;
+      line-height: 1.5;
+      color: var(--pencil);
+      margin: 0;
+      font-style: italic;
+    }
+
+    /* Risks */
+    .risk-item {
+      padding: 16px 0;
+      border-bottom: 1px solid var(--hairline);
+    }
+
+    .risk-item:last-child {
+      border-bottom: none;
+      padding-bottom: 4px;
+    }
+
+    .risk-text {
+      font-weight: 600;
+      font-size: 14.5px;
+      line-height: 1.5;
+      margin: 0 0 8px;
+    }
+
+    .risk-badges {
+      display: flex;
+      gap: 8px;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+    }
+
+    .mitigation {
+      font-size: 13px;
+      line-height: 1.55;
+      color: var(--pencil);
+      margin: 0 0 0 16px;
+      padding-left: 10px;
+      border-left: 2px dashed var(--hairline);
+      font-style: italic;
+    }
+
+    .btn-new {
+      background: none;
+      border: 1px solid var(--hairline);
+      border-radius: var(--radius);
+      padding: 10px 18px;
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 12.5px;
+      color: var(--ink-navy);
+      cursor: pointer;
+    }
+
+    .btn-new:hover {
+      background: rgba(30, 42, 56, 0.05);
+    }
+
+    .btn-new:focus-visible {
+      outline: 2px solid var(--ink-navy);
+      outline-offset: 2px;
+    }
+
+    footer {
+      margin-top: 30px;
+      text-align: center;
+    }
+
+    footer p {
+      font-family: 'IBM Plex Mono', monospace;
+      font-size: 11px;
+      color: var(--ink-navy);
+      opacity: 0.55;
+      line-height: 1.6;
+      max-width: 52ch;
+      margin: 0 auto;
+    }
+
+    @media (max-width: 600px) {
+      .file-card {
+        padding: 26px 20px 22px;
+      }
+
+      .stat-row {
+        grid-template-columns: 1fr;
+      }
+
+      .dossier {
+        padding: 24px 18px 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <svg width="0" height="0" style="position:absolute">
+    <filter id="inkEdge" x="-20%" y="-20%" width="140%" height="140%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.04 0.09" numOctaves="2" result="noise" seed="7" />
+      <feDisplacementMap in="SourceGraphic" in2="noise" scale="4.5" />
+    </filter>
+  </svg>
+
+  <div class="page">
+
+    <header class="masthead">
+      <div class="brand">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+          <rect x="2" y="3" width="16" height="14" rx="1" stroke="#1E2A38" stroke-width="1.4" />
+          <line x1="5" y1="8" x2="15" y2="8" stroke="#1E2A38" stroke-width="1.2" />
+          <line x1="5" y1="11.5" x2="12" y2="11.5" stroke="#1E2A38" stroke-width="1.2" />
+        </svg>
+        <span>CASE FILES</span>
+      </div>
+      <div class="tagline">Startup due diligence, run in seconds</div>
+    </header>
+
+    <main>
+      <section class="intake" id="intakeSection">
+        <div class="file-stack" aria-hidden="true"><span></span><span></span></div>
+        <div class="file-card">
+          <p class="eyebrow" id="caseNumber">CASE FILE NO. 0427</p>
+          <h1>Open a case file on your idea.</h1>
+          <p class="lede">Describe what you're building. We'll pull market signals, size up the competition, sketch a
+            scaling path, and flag the risks — before you write a line of code.</p>
+          <label for="ideaInput" class="sr-only">Describe your startup idea</label>
+          <textarea id="ideaInput" rows="4" maxlength="600"
+            placeholder="e.g. A subscription box that ships pre-portioned spice blends with recipe cards, for home cooks who don't meal plan."></textarea>
+          <div class="intake-footer">
+            <span class="meta">Powered by Groq · Compound Mini (live web search)</span>
+            <button id="openFileBtn" class="btn-open">Open the file →</button>
+          </div>
+          <p class="error" id="errorMsg" hidden></p>
+        </div>
+      </section>
+
+      <section class="loading" id="loadingSection" hidden>
+        <p class="loading-line" id="loadingLine">Pulling market signals…</p>
+        <div class="teleprinter"><span></span></div>
+      </section>
+
+      <section class="dossier" id="dossierSection" hidden>
+        <div class="verdict-row">
+          <div class="stamp" id="verdictStamp"><span id="verdictText">PROCEED</span></div>
+          <p class="verdict-reason" id="verdictReason"></p>
+        </div>
+
+        <nav class="tabs" id="tabs">
+          <button class="tab active" data-tab="market">Market</button>
+          <button class="tab" data-tab="competitors">Competitors</button>
+          <button class="tab" data-tab="scaling">Scaling</button>
+          <button class="tab" data-tab="risks">Risks</button>
+        </nav>
+
+        <div class="panel" id="panel-market"></div>
+
+        <div class="panel" id="panel-competitors" hidden></div>
+        <div class="panel" id="panel-scaling" hidden></div>
+        <div class="panel" id="panel-risks" hidden></div>
+
+        <button id="newCaseBtn" class="btn-new">+ Open a new case</button>
+      </section>
+    </main>
+
+    <footer>
+      <p>This runs on Groq's compound model, which searches the live web before answering, so expect each case to take a
+        bit longer than a plain chat call. Your idea is sent directly from your browser to Groq's API — nothing passes
+        through a server of ours. Add your own Groq API key in the code before using, and avoid pasting confidential
+        business details if this page is ever hosted publicly.</p>
+    </footer>
+  </div>
+
+  <script>
+    // ============================================================
+    // ADD YOUR GROQ API KEY HERE before using this page.
+    // Get one free at https://console.groq.com
+    // ============================================================
+    const GROQ_API_KEY = "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";
+    // groq/compound-mini does live web search just like groq/compound, but makes
+    // at most one tool call per request, so it carries far less token overhead —
+    // a safer default if you're on Groq's free tier. For even less overhead (no
+    // web search at all), use "llama-3.3-70b-versatile" instead.
+    const GROQ_MODEL = "groq/compound-mini";
+    const MAX_IDEA_LENGTH = 600; // keeps the request comfortably under per-request token limits
+
+    const SYSTEM_PROMPT = `You are a meticulous startup analyst with access to live web search. Research the idea given before writing anything — look for real competitors, real market-size or growth figures, and real recent trends. When you use a number or fact you found, name the source in plain text inside the sentence (e.g. "per a 2025 Statista report" or "per Crunchbase data"). If you can't find a solid figure, say so plainly instead of inventing one.
+
+Respond with ONLY a single JSON object — no markdown fences, no commentary before or after, nothing outside the JSON — matching exactly this shape:
+{
+  "verdict": "PROCEED" | "PROCEED WITH CAUTION" | "HIGH RISK",
+  "verdict_reason": string (1-2 sentences, plain language, no hedging),
+  "market": {
+    "summary": string (4-6 sentences: who has this problem, how big and urgent it is, why now is the moment, and where real demand is already showing up),
+    "target_customer": string (1-2 sentences describing the primary buyer or user in concrete terms),
+    "market_size_signal": string (1-2 sentences with a rough size or growth-rate estimate if you found one, plus the reasoning or source behind it),
+    "demand_signal": "Strong" | "Moderate" | "Weak",
+    "demand_signal_reason": string (1 sentence on what's driving that read),
+    "key_trends": [ string (1 sentence each — exactly 3 items, concrete shifts feeding this market) ]
+  },
+  "competitors": [
+    {
+      "name": string (a real or closely representative company or product, not a placeholder),
+      "description": string (1-2 sentences on what they do and how they make money),
+      "their_edge": string (1 sentence on what they do well),
+      "their_gap": string (1 sentence on where they fall short or leave room open),
+      "threat_level": "Low" | "Medium" | "High"
+    }
+  ],
+  "scaling_ideas": [
+    {
+      "idea": string (1 sentence, concrete and specific to this business, not generic advice),
+      "rationale": string (1 sentence on why this works at this particular stage),
+      "horizon": "Now" | "Next" | "Later"
+    }
+  ],
+  "risks": [
+    {
+      "risk": string (1-2 sentences, specific to this idea, not a generic startup risk),
+      "severity": "Low" | "Medium" | "High",
+      "likelihood": "Low" | "Medium" | "High",
+      "mitigation": string (1-2 sentences, a concrete first step that would reduce it)
+    }
+  ]
+}
+Include 4 to 6 competitors, 5 to 7 scaling ideas spread across Now/Next/Later, and 4 to 6 risks. Write like an analyst who actually did the research — specific names, specific numbers where you can find them, specific mechanisms — never generic filler that could apply to any startup. Output nothing outside the JSON object.`;
+
+    const intakeSection = document.getElementById('intakeSection');
+    const loadingSection = document.getElementById('loadingSection');
+    const dossierSection = document.getElementById('dossierSection');
+    const ideaInput = document.getElementById('ideaInput');
+    const openFileBtn = document.getElementById('openFileBtn');
+    const errorMsg = document.getElementById('errorMsg');
+    const caseNumber = document.getElementById('caseNumber');
+    const loadingLine = document.getElementById('loadingLine');
+    const newCaseBtn = document.getElementById('newCaseBtn');
+
+    const loadingMessages = [
+      "Searching the live web for comps…",
+      "Cross-checking market size…",
+      "Reading up on recent trends…",
+      "Sketching scaling plays…",
+      "Stress-testing the risks…"
+    ];
+    let loadingInterval = null;
+
+    function randomCaseNumber() {
+      return "CASE FILE NO. " + Math.floor(1000 + Math.random() * 9000);
+    }
+    caseNumber.textContent = randomCaseNumber();
+
+    function showError(message) {
+      errorMsg.textContent = message;
+      errorMsg.hidden = false;
+    }
+    function clearError() {
+      errorMsg.hidden = true;
+      errorMsg.textContent = "";
+    }
+
+    function setStage(stage) {
+      intakeSection.hidden = stage !== 'intake';
+      loadingSection.hidden = stage !== 'loading';
+      dossierSection.hidden = stage !== 'dossier';
+    }
+
+    openFileBtn.addEventListener('click', async () => {
+      clearError();
+      const idea = ideaInput.value.trim();
+      if (!idea) {
+        showError("Describe your idea first — even a sentence is enough.");
+        return;
+      }
+      if (idea.length > MAX_IDEA_LENGTH) {
+        showError(`That's a lot of detail — keep it under ${MAX_IDEA_LENGTH} characters (currently ${idea.length}) so the request stays within Groq's size limits.`);
+        return;
+      }
+      if (!GROQ_API_KEY || GROQ_API_KEY.includes("YOUR_GROQ_API_KEY")) {
+        showError("Add your Groq API key in the code (look for GROQ_API_KEY near the top of the <script> tag) before opening a case.");
+        return;
+      }
+
+      setStage('loading');
+      let msgIndex = 0;
+      loadingLine.textContent = loadingMessages[0];
+      loadingInterval = setInterval(() => {
+        msgIndex = (msgIndex + 1) % loadingMessages.length;
+        loadingLine.textContent = loadingMessages[msgIndex];
+      }, 1300);
+
+      try {
+        const result = await analyzeIdea(idea);
+        renderDossier(result);
+        setStage('dossier');
+      } catch (err) {
+        setStage('intake');
+        showError(err.message || "Something went wrong reaching Groq. Check your API key and try again.");
+      } finally {
+        clearInterval(loadingInterval);
+      }
+    });
+
+    newCaseBtn.addEventListener('click', () => {
+      ideaInput.value = "";
+      caseNumber.textContent = randomCaseNumber();
+      setStage('intake');
+      ideaInput.focus();
+    });
+
+    async function analyzeIdea(idea) {
+      const res = await fetch("https://api.groq.com/openai/v1/chat/completions", {
+        method: "POST",
+        headers: {
+          "Authorization": `Bearer ${GROQ_API_KEY}`,
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          model: GROQ_MODEL,
+          messages: [
+            { role: "system", content: SYSTEM_PROMPT },
+            { role: "user", content: `Startup idea: """${idea}"""` }
+          ],
+          temperature: 0.3,
+          max_completion_tokens: 2000,
+          response_format: { type: "json_object" }
+        })
+      });
+
+      if (!res.ok) {
+        let bodyMessage = "";
+        try {
+          const errJson = await res.json();
+          bodyMessage = (errJson.error && errJson.error.message) || "";
+        } catch (e) { /* body wasn't JSON, ignore */ }
+
+        if (res.status === 413) {
+          throw new Error(
+            `Groq rejected the request as too large${bodyMessage ? ` (${bodyMessage})` : ""}. ` +
+            `Try a shorter idea, or check your tier's per-request token limit at console.groq.com/settings/limits — ` +
+            `the current model is "${GROQ_MODEL}", which uses live web search and costs more tokens per request than a plain chat model.`
+          );
+        }
+        throw new Error(`Groq API error (${res.status})${bodyMessage ? `: ${bodyMessage}` : "."}`);
+      }
+
+      const data = await res.json();
+      const raw = data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content;
+      if (!raw) throw new Error("Groq returned an empty response.");
+
+      return parseDossierJson(raw);
+    }
+
+    // Compound models occasionally wrap the JSON with a short preamble or a
+    // trailing note about sources used. Try a clean parse first, then fall
+    // back to pulling out the {...} block if needed.
+    function parseDossierJson(raw) {
+      try {
+        return JSON.parse(raw);
+      } catch (e) {
+        const match = raw.match(/\{[\s\S]*\}/);
+        if (match) {
+          try { return JSON.parse(match[0]); } catch (e2) { /* fall through */ }
+        }
+        throw new Error("Couldn't parse the analysis — try opening the case again.");
+      }
+    }
+
+    function renderDossier(data) {
+      // Verdict stamp
+      const stamp = document.getElementById('verdictStamp');
+      const verdictText = document.getElementById('verdictText');
+      const verdictReason = document.getElementById('verdictReason');
+      stamp.classList.remove('stamp-caution', 'stamp-risk', 'stamp-in');
+      const verdict = (data.verdict || "PROCEED").toUpperCase();
+      verdictText.textContent = verdict;
+      if (verdict.includes("HIGH RISK")) stamp.classList.add('stamp-risk');
+      else if (verdict.includes("CAUTION")) stamp.classList.add('stamp-caution');
+      verdictReason.textContent = data.verdict_reason || "";
+      requestAnimationFrame(() => stamp.classList.add('stamp-in'));
+
+      // Market
+      const market = data.market || {};
+      const trends = market.key_trends || [];
+      document.getElementById('panel-market').innerHTML = `
+      <div class="signal-badges">
+        <span class="badge ${demandBadgeClass(market.demand_signal)}">${escapeHtml((market.demand_signal || "Moderate").toUpperCase())} DEMAND</span>
+      </div>
+      <div class="field-block">
+        <p class="field-label">Why now</p>
+        <p class="field-text">${escapeHtml(market.summary || "")}</p>
+      </div>
+      <div class="field-block">
+        <p class="field-label">Who wants this</p>
+        <p class="field-text">${escapeHtml(market.target_customer || "")}</p>
+      </div>
+      <div class="field-block">
+        <p class="field-label">Market size</p>
+        <p class="field-text">${escapeHtml(market.market_size_signal || "")}</p>
+      </div>
+      ${market.demand_signal_reason ? `
+      <div class="field-block">
+        <p class="field-label">Demand signal</p>
+        <p class="field-text">${escapeHtml(market.demand_signal_reason)}</p>
+      </div>` : ""}
+      ${trends.length ? `
+      <div class="field-block">
+        <p class="field-label">Key trends</p>
+        <ul class="trend-list">${trends.map(t => `<li>${escapeHtml(t)}</li>`).join("")}</ul>
+      </div>` : ""}
+    `;
+
+      // Competitors
+      const competitors = data.competitors || [];
+      document.getElementById('panel-competitors').innerHTML = competitors.map(c => `
+      <div class="competitor-card-full">
+        <div class="competitor-head">
+          <p class="competitor-name">${escapeHtml(c.name || "Unnamed")}</p>
+          <span class="badge ${badgeClass(c.threat_level)}">${escapeHtml((c.threat_level || "Low").toUpperCase())} THREAT</span>
+        </div>
+        <p class="competitor-desc">${escapeHtml(c.description || "")}</p>
+        <div class="competitor-meta">
+          <div class="meta-col">
+            <p class="field-label">Edge</p>
+            <p class="field-text-sm">${escapeHtml(c.their_edge || "—")}</p>
+          </div>
+          <div class="meta-col">
+            <p class="field-label">Gap</p>
+            <p class="field-text-sm">${escapeHtml(c.their_gap || "—")}</p>
+          </div>
+        </div>
+      </div>
+    `).join("") || "<p>No competitors surfaced.</p>";
+
+      // Scaling — grouped by horizon, in order
+      const scaling = data.scaling_ideas || [];
+      const horizons = ["Now", "Next", "Later"];
+      const scalingHtml = horizons.map(h => {
+        const items = scaling.filter(s => (s.horizon || "Now") === h);
+        if (!items.length) return "";
+        return `
+        <div class="horizon-group">
+          <p class="horizon-label">${h}</p>
+          ${items.map(s => `
+            <div class="idea-block">
+              <p class="idea-row">${escapeHtml(s.idea || "")}</p>
+              ${s.rationale ? `<p class="idea-rationale">${escapeHtml(s.rationale)}</p>` : ""}
+            </div>
+          `).join("")}
+        </div>
+      `;
+      }).join("");
+      document.getElementById('panel-scaling').innerHTML = scalingHtml || "<p>No scaling plays surfaced.</p>";
+
+      // Risks
+      const risks = data.risks || [];
+      document.getElementById('panel-risks').innerHTML = risks.map(r => `
+      <div class="risk-item">
+        <p class="risk-text">${escapeHtml(r.risk || "")}</p>
+        <div class="risk-badges">
+          <span class="badge ${badgeClass(r.severity)}">SEVERITY: ${escapeHtml((r.severity || "Low").toUpperCase())}</span>
+          <span class="badge ${badgeClass(r.likelihood)}">LIKELIHOOD: ${escapeHtml((r.likelihood || "Low").toUpperCase())}</span>
+        </div>
+        <p class="mitigation">${escapeHtml(r.mitigation || "")}</p>
+      </div>
+    `).join("") || "<p>No major risks surfaced.</p>";
+    }
+
+    function badgeClass(level) {
+      const l = (level || "Low").toLowerCase();
+      if (l === "high") return "badge-high";
+      if (l === "medium") return "badge-medium";
+      return "badge-low";
+    }
+
+    function demandBadgeClass(level) {
+      const l = (level || "Moderate").toLowerCase();
+      if (l === "strong") return "badge-low";
+      if (l === "weak") return "badge-high";
+      return "badge-medium";
+    }
+
+    function escapeHtml(str) {
+      return String(str)
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;");
+    }
+
+    // Tabs
+    document.getElementById('tabs').addEventListener('click', (e) => {
+      const btn = e.target.closest('.tab');
+      if (!btn) return;
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      btn.classList.add('active');
+      const target = btn.dataset.tab;
+      ['market', 'competitors', 'scaling', 'risks'].forEach(name => {
+        document.getElementById('panel-' + name).hidden = name !== target;
+      });
+    });
+  </script>
+</body>
+
+</html>
